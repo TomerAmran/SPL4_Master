@@ -1,6 +1,9 @@
 from DTO import Coffee_stand, Product
 
 
+from DTO import Employee, Supplier
+
+
 class Activities:
     def __init__(self, conn):
         self.conn = conn
@@ -42,12 +45,19 @@ class Employees:
         self.conn.execute("""INSERT INTO Employees (id, name, salary, coffee_stand) VALUES (?, ?, ?, ?)""",
                           [employee.id, employee.name, employee.salary, employee.coffee_stand])
 
-    # def find(self, student_id):
-    #     c = self.conn.cursor()
-    #     c.execute("""
-    #         SELECT id, name FROM students WHERE id = ?
-    #     """, [student_id])
-    #     return Student(*c.fetchone())
+    def find(self, id):
+            c = self.conn.cursor()
+            c.execute("""
+                SELECT * FROM Employees WHERE id = ?
+            """, [id])
+            return Employee(*c.fetchone())
+
+    def find_all(self):
+        c = self.conn.cursor()
+        all = c.execute("""
+            SELECT * FROM Suppliers
+        """).fetchall()
+        return [Employee(*row) for row in all]
 
 
 class Products:
@@ -82,3 +92,21 @@ class Products:
 class Suppliers:
     def __init__(self, conn):
         self.conn = conn
+
+    def insert(self, supplier):
+        self.conn.execute("""INSERT INTO Suppliers (id, name, contact_information) VALUES (?, ?, ?)""",
+                          [supplier.id, supplier.name, supplier.contact_information])
+
+    def find(self, id):
+        c = self.conn.cursor()
+        c.execute("""
+                SELECT * FROM Suppliers WHERE id = ?
+            """, [id])
+        return Employee(*c.fetchone())
+
+    def find_all(self):
+        c = self.conn.cursor()
+        all = c.execute("""
+            SELECT * FROM Suppliers
+        """).fetchall()
+        return [Supplier(*row) for row in all]

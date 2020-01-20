@@ -5,6 +5,9 @@ class Employee:
         self.salary = salary
         self.coffee_stand = coffee_stand
 
+    def __str__(self):
+        return "({}, '{}', {}, {})".format(str(self.id), str(self.name), str(self.salary), str(self.coffee_stand))
+
 
 class Supplier:
     def __init__(self, id, name, contact_information):
