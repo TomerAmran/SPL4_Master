@@ -8,9 +8,10 @@ class Activities:
         self.conn = conn
 
     def insert(self, activitie):
-        self.conn.execute("""
-        INSERT INTO Activities(product_id, quantity, activator_id, date) VALUES (?,?,?,?)
-        """, [activitie.product_id, activitie.quantity, activitie.activator_id, activitie.date])
+        with self.conn:
+            self.conn.execute("""
+            INSERT INTO Activities(product_id, quantity, activator_id, date) VALUES (?,?,?,?)
+            """, [activitie.product_id, activitie.quantity, activitie.activator_id, activitie.date])
 
     def find_all(self):
         cursor = self.conn.cursor()
@@ -24,9 +25,10 @@ class Coffee_stands:
         self.conn = conn
 
     def insert(self, coffee_stand):
-        self.conn.execute("""
-           INSERT INTO Coffee_stands(id, location, number_of_employees) VALUES (?,?,?)
-           """, [coffee_stand.id, coffee_stand.location, coffee_stand.number_of_employees])
+        with self.conn:
+             self.conn.execute("""
+                INSERT INTO Coffee_stands VALUES(?,?,?)
+                 """, [coffee_stand.id, coffee_stand.location, coffee_stand.number_of_employees])
 
     def find(self, id):
         cursor = self.conn.cursor()
@@ -47,15 +49,16 @@ class Employees:
         self.conn = conn
 
     def insert(self, employee):
-        self.conn.execute("""INSERT INTO Employees (id, name, salary, coffee_stand) VALUES (?, ?, ?, ?)""",
+        with self.conn:
+            self.conn.execute("""INSERT INTO Employees (id, name, salary, coffee_stand) VALUES (?, ?, ?, ?)""",
                           [employee.id, employee.name, employee.salary, employee.coffee_stand])
 
     def find(self, id):
-            c = self.conn.cursor()
-            c.execute("""
+        c = self.conn.cursor()
+        c.execute("""
                 SELECT * FROM Employees WHERE id = ?
             """, [id])
-            return Employee(*c.fetchone())
+        return Employee(*c.fetchone())
 
     def find_all(self):
         c = self.conn.cursor()
@@ -70,13 +73,14 @@ class Products:
         self.conn = conn
 
     def insert(self, product):
-        self.conn.execute("""
-           INSERT INTO Products(id, description, price,quantity) VALUES (?,?,?,?)
-           """, [product.id, product.description, product.price, product.quantity])
+        with self.conn:
+            self.conn.execute("""
+                INSERT INTO Products(id, description, price,quantity) VALUES (?,?,?,?)
+                """, [product.id, product.description, product.price, product.quantity])
 
     def find(self, id):
         cursor = self.conn.cursor()
-        cursor.execure("""
+        cursor.execute("""
         SELECT * FROM Products WHERE id = ?
         """, ([id]))
         return Product(*cursor.fetchone())
@@ -87,9 +91,21 @@ class Products:
                 SELECT * FROM Products ORDER BY id ASC""").fetchall()
         return [Product(*row) for row in all_stands]
 
+    def getquantity(self,id):
+        cursor = self.conn.cursor()
+        cursor.execute("""
+                SELECT quantity FROM Products WHERE id = ?
+                 """, (id,))
+        quantity =  cursor.fetchone()[0]
+        return quantity
+
     def updatequantity(self, id, quantity):
-        originalquantity = int(self.conn.execute(' SELECT quantity FROM Products WHERE id = ? '))
-        newquantity = originalquantity + quantity
+        cursor = self.conn.cursor()
+        cursor.execute("""
+        SELECT quantity FROM Products WHERE id = ?
+         """, (id,))
+        originalquantity = self.getquantity(id)
+        newquantity = originalquantity + int(quantity)
         self.conn.execute("""
         UPDATE Products SET quantity = ? WHERE id = ? """, [newquantity, id])
 
@@ -99,8 +115,9 @@ class Suppliers:
         self.conn = conn
 
     def insert(self, supplier):
-        self.conn.execute("""INSERT INTO Suppliers (id, name, contact_information) VALUES (?, ?, ?)""",
-                          [supplier.id, supplier.name, supplier.contact_information])
+        with self.conn:
+            self.conn.execute("""INSERT INTO Suppliers VALUES (?, ?, ?)""",
+                              [supplier.id, supplier.name, supplier.contact_information])
 
     def find(self, id):
         c = self.conn.cursor()

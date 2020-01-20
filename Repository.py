@@ -35,4 +35,4 @@ class Repository:
 
 
 repo = Repository()
-repo.create_tables()
+
