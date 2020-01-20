@@ -1,5 +1,4 @@
-from DTO import Coffee_stand, Product
-
+from DTO import Coffee_stand, Product, Activitie
 
 from DTO import Employee, Supplier
 
@@ -12,6 +11,12 @@ class Activities:
         self.conn.execute("""
         INSERT INTO Activities(product_id, quantity, activator_id, date) VALUES (?,?,?,?)
         """, [activitie.product_id, activitie.quantity, activitie.activator_id, activitie.date])
+
+    def find_all(self):
+        cursor = self.conn.cursor()
+        all = cursor.execute("""
+                SELECT * FROM Activities""").fetchall()
+        return [Activitie(*row) for row in all]
 
 
 class Coffee_stands:
@@ -30,7 +35,7 @@ class Coffee_stands:
         """, ([id]))
         return Coffee_stand(*cursor.fetchone())
 
-    def findall(self):
+    def find_all(self):
         cursor = self.conn.cursor()
         all_stands = cursor.execure("""
                 SELECT * FROM Coffee_stands ORDER BY id ASC""").fetchall()
@@ -55,7 +60,7 @@ class Employees:
     def find_all(self):
         c = self.conn.cursor()
         all = c.execute("""
-            SELECT * FROM Suppliers
+            SELECT * FROM Employees
         """).fetchall()
         return [Employee(*row) for row in all]
 
@@ -76,9 +81,9 @@ class Products:
         """, ([id]))
         return Product(*cursor.fetchone())
 
-    def findall(self):
+    def find_all(self):
         cursor = self.conn.cursor()
-        all_stands = cursor.execure("""
+        all_stands = cursor.execute("""
                 SELECT * FROM Products ORDER BY id ASC""").fetchall()
         return [Product(*row) for row in all_stands]
 

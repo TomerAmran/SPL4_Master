@@ -1,5 +1,5 @@
 import sqlite3
-from DAO import Coffee_stands, Activities, Employees, Suppliers
+from DAO import Coffee_stands, Activities, Employees, Suppliers, Products
 from DTO import Employee
 
 
@@ -8,6 +8,9 @@ class Repository:
         self.conn = sqlite3.connect('moncafe.db')
         self.employees = Employees(self.conn)
         self.activities = Activities(self.conn)
+        self.suppliers = Suppliers(self.conn)
+        self.products = Products(self.conn)
+        self.coffee_stands = Coffee_stands(self.conn)
 
     def create_tables(self):
         #Coffee_stands
