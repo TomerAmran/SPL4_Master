@@ -30,7 +30,11 @@ def print_Employees_report():
 
 
 def print_joined_Activities():
-    pass
+    report = repo.create_activity_report()
+    if report.__sizeof__() > 0:
+        print('Activities')
+        for line in report:
+            print(line)
 
 
 def printdb():

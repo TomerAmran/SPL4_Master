@@ -26,7 +26,7 @@ class Coffee_stands:
 
     def insert(self, coffee_stand):
         with self.conn:
-             self.conn.execute("""
+            self.conn.execute("""
                 INSERT INTO Coffee_stands VALUES(?,?,?)
                  """, [coffee_stand.id, coffee_stand.location, coffee_stand.number_of_employees])
 
@@ -51,7 +51,7 @@ class Employees:
     def insert(self, employee):
         with self.conn:
             self.conn.execute("""INSERT INTO Employees (id, name, salary, coffee_stand) VALUES (?, ?, ?, ?)""",
-                          [employee.id, employee.name, employee.salary, employee.coffee_stand])
+                              [employee.id, employee.name, employee.salary, employee.coffee_stand])
 
     def find(self, id):
         c = self.conn.cursor()
@@ -63,8 +63,14 @@ class Employees:
     def find_all(self):
         c = self.conn.cursor()
         all = c.execute("""
-            SELECT * FROM Employees
+            SELECT * FROM Employees ORDER BY id ASC
         """).fetchall()
+        return [Employee(*row) for row in all]
+    def find_all_sorted_by_name(self):
+        c = self.conn.cursor()
+        all = c.execute("""
+                   SELECT * FROM Employees ORDER BY name ASC
+               """).fetchall()
         return [Employee(*row) for row in all]
 
 
@@ -91,12 +97,12 @@ class Products:
                 SELECT * FROM Products ORDER BY id ASC""").fetchall()
         return [Product(*row) for row in all_stands]
 
-    def getquantity(self,id):
+    def getquantity(self, id):
         cursor = self.conn.cursor()
         cursor.execute("""
                 SELECT quantity FROM Products WHERE id = ?
                  """, (id,))
-        quantity =  cursor.fetchone()[0]
+        quantity = cursor.fetchone()[0]
         return quantity
 
     def updatequantity(self, id, quantity):
