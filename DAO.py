@@ -1,14 +1,37 @@
+from DTO import Coffee_stand, Product
+
+
 class Activities:
     def __init__(self, conn):
         self.conn = conn
+
     def insert(self, activitie):
         self.conn.execute("""
         INSERT INTO Activities(product_id, quantity, activator_id, date) VALUES (?,?,?,?)
         """, [activitie.product_id, activitie.quantity, activitie.activator_id, activitie.date])
 
+
 class Coffee_stands:
     def __init__(self, conn):
         self.conn = conn
+
+    def insert(self, coffee_stand):
+        self.conn.execute("""
+           INSERT INTO Coffee_stands(id, location, number_of_employees) VALUES (?,?,?)
+           """, [coffee_stand.id, coffee_stand.location, coffee_stand.number_of_employees])
+
+    def find(self, id):
+        cursor = self.conn.cursor()
+        cursor.execure("""
+        SELECT * FROM Coffee_stands WHERE id = ?
+        """, ([id]))
+        return Coffee_stand(*cursor.fetchone())
+
+    def findall(self):
+        cursor = self.conn.cursor()
+        all_stands = cursor.execure("""
+                SELECT * FROM Coffee_stands ORDER BY id ASC""").fetchall()
+        return [Coffee_stand(*row) for row in all_stands]
 
 
 class Employees:
@@ -30,6 +53,30 @@ class Employees:
 class Products:
     def __init__(self, conn):
         self.conn = conn
+
+    def insert(self, product):
+        self.conn.execute("""
+           INSERT INTO Products(id, description, price,quantity) VALUES (?,?,?,?)
+           """, [product.id, product.description, product.price, product.quantity])
+
+    def find(self, id):
+        cursor = self.conn.cursor()
+        cursor.execure("""
+        SELECT * FROM Products WHERE id = ?
+        """, ([id]))
+        return Product(*cursor.fetchone())
+
+    def findall(self):
+        cursor = self.conn.cursor()
+        all_stands = cursor.execure("""
+                SELECT * FROM Products ORDER BY id ASC""").fetchall()
+        return [Product(*row) for row in all_stands]
+
+    def updatequantity(self, id, quantity):
+        originalquantity = int(self.conn.execute(' SELECT quantity FROM Products WHERE id = ? '))
+        newquantity = originalquantity + quantity
+        self.conn.execute("""
+        UPDATE Products SET quantity = ? WHERE id = ? """, [newquantity, id])
 
 
 class Suppliers:
