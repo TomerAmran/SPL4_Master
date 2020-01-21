@@ -6,6 +6,10 @@ def print_Activities():
     for activitie in repo.activities.find_all():
         print(activitie)
 
+def print_Coffee_stands():
+    print('Coffee stands')
+    for stand in repo.coffee_stands.find_all():
+        print(stand)
 
 def print_Employees():
     print('Employees')
@@ -26,12 +30,17 @@ def print_Suppliers():
 
 
 def print_Employees_report():
-    pass
+    report = repo.create_employees_report()
+    print()
+    print('Employees Report')
+    for line in report:
+      print(*line)
 
 
 def print_joined_Activities():
     report = repo.create_activity_report()
-    if report.__sizeof__() > 0:
+    if report.__len__() > 0:
+        print()
         print('Activities')
         for line in report:
             print(line)
@@ -39,6 +48,7 @@ def print_joined_Activities():
 
 def printdb():
     print_Activities()
+    print_Coffee_stands()
     print_Employees()
     print_Products()
     print_Suppliers()

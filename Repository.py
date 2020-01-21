@@ -35,19 +35,31 @@ class Repository:
         date DATE NOT NULL)
         """)
 
-        
+    def create_employees_report(self):
+        employees = self.employees.find_all_sorted_by_name()
+        report = []
+        for employee in employees:
+            employeereport = [employee.name, employee.salary, self.coffee_stands.find(employee.coffee_stand).location]
+            cursor = self.conn.cursor()
+            employeereport.append(0)
+            cursor.execute("""
+            SELECT product_id, quantity  FROM activities where activator_id = ?
+             """, (employee.id,))
+            for tuple in cursor.fetchall():
+                sales = (self.products.get_price(tuple[0]))
+                employeereport[3] = employeereport[3] - (sales[0] * tuple[1])
+            report.append(employeereport)
+        return report
 
     def create_activity_report(self):
         cursor = self.conn.cursor()
         cursor.execute("""
         SELECT a.date, p.description, a.quantity, e.name, s.name
-        from Activities as a
-        JOIN Products as p
-        on a.product_id = p.id
-        LEFT JOIN Employees as e
-        on a.activator_id = e.id
-        LEFT JOIN Suppliers as s
-        on a.activator_id = s.id """)
+        from Activities as a 
+        JOIN Products as p on a.product_id = p.id
+        LEFT JOIN Employees as e on a.activator_id = e.id
+        LEFT JOIN Suppliers as s on a.activator_id = s.id 
+        ORDER BY a.date ASC""")
         return cursor.fetchall()
 
 

@@ -14,18 +14,21 @@ class Supplier:
         self.contact_information = contact_information
         self.name = name
         self.id = id
+
     def __str__(self):
-        return "({}, '{}', '{}')".format(self.id,self.name,self.contact_information)
+        return "({}, '{}', '{}')".format(self.id, self.name, self.contact_information)
+
 
 class Product:
-    def __init__(self,id,description, price, quantity):
+    def __init__(self, id, description, price, quantity):
         self.quantity = quantity
         self.price = price
         self.description = description
         self.id = id
 
     def __str__(self):
-        return "({}, '{}', {}, {})".format(self.id,self.description,self.price,self.quantity)
+        return "({}, '{}', {}, {})".format(self.id, self.description, self.price, self.quantity)
+
 
 class Coffee_stand:
     def __init__(self, id, location, number_of_employees):
@@ -34,7 +37,8 @@ class Coffee_stand:
         self.number_of_employees = number_of_employees
 
     def __str__(self):
-        return "({}, '{}', {})".format(self.id,self.location,self.number_of_employees)
+        return "({}, '{}', {})".format(self.id, self.location, self.number_of_employees)
+
 
 class Activitie:
     def __init__(self, product_id, quantity, activator_id, date):
@@ -44,4 +48,7 @@ class Activitie:
         self.date = date
 
     def __str__(self):
-        return "({}, {}, {}, {})".format(self.product_id,self.quantity,self.activator_id,self.date)
+        return "({}, {}, {}, {})".format(self.product_id, self.quantity, self.activator_id, self.date)
+
+
+

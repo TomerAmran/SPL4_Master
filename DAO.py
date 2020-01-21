@@ -16,7 +16,7 @@ class Activities:
     def find_all(self):
         cursor = self.conn.cursor()
         all = cursor.execute("""
-                SELECT * FROM Activities""").fetchall()
+                SELECT * FROM Activities ORDER BY date ASC""").fetchall()
         return [Activitie(*row) for row in all]
 
 
@@ -32,16 +32,23 @@ class Coffee_stands:
 
     def find(self, id):
         cursor = self.conn.cursor()
-        cursor.execure("""
+        cursor.execute("""
         SELECT * FROM Coffee_stands WHERE id = ?
         """, ([id]))
         return Coffee_stand(*cursor.fetchone())
 
     def find_all(self):
         cursor = self.conn.cursor()
-        all_stands = cursor.execure("""
+        all_stands = cursor.execute("""
                 SELECT * FROM Coffee_stands ORDER BY id ASC""").fetchall()
         return [Coffee_stand(*row) for row in all_stands]
+
+    def find_name_by_id(self, id):
+        cursor = self.conn.cursor()
+        cursor.execute("""
+                SELECT name FROM Coffee_stands WHERE id = ?
+                """, ([id]))
+        return cursor.fetchone()
 
 
 class Employees:
@@ -66,6 +73,7 @@ class Employees:
             SELECT * FROM Employees ORDER BY id ASC
         """).fetchall()
         return [Employee(*row) for row in all]
+
     def find_all_sorted_by_name(self):
         c = self.conn.cursor()
         all = c.execute("""
@@ -94,7 +102,7 @@ class Products:
     def find_all(self):
         cursor = self.conn.cursor()
         all_stands = cursor.execute("""
-                SELECT * FROM Products ORDER BY id ASC""").fetchall()
+                SELECT * FROM Products C""").fetchall()
         return [Product(*row) for row in all_stands]
 
     def getquantity(self, id):
@@ -114,6 +122,13 @@ class Products:
         newquantity = originalquantity + int(quantity)
         self.conn.execute("""
         UPDATE Products SET quantity = ? WHERE id = ? """, [newquantity, id])
+
+    def get_price(self, id):
+        cursor = self.conn.cursor()
+        cursor.execute("""
+                SELECT price FROM Products WHERE id = ?
+                 """, (id,))
+        return cursor.fetchone()
 
 
 class Suppliers:
@@ -135,6 +150,6 @@ class Suppliers:
     def find_all(self):
         c = self.conn.cursor()
         all = c.execute("""
-            SELECT * FROM Suppliers
+            SELECT * FROM Suppliers ORDER BY id ASC
         """).fetchall()
         return [Supplier(*row) for row in all]

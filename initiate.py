@@ -19,16 +19,15 @@ def main(args):
     inputfilename = args[1]
     with open(inputfilename) as inputfile:
         for line in inputfile:
-            line = line[:-1]
             words = line.split(",")
             if words[0] == 'C':
-                repo.coffee_stands.insert(Coffee_stand(words[1], words[2], words[3]))
+                repo.coffee_stands.insert(Coffee_stand(words[1].strip(' '), words[2].strip(' '), words[3].strip(' ')))
             if words[0] == 'S':
-                repo.suppliers.insert(Supplier(words[1], words[2], words[3]))
+                repo.suppliers.insert(Supplier(words[1].strip(' '), words[2].strip(' '), words[3][:-1].strip(' ')))
             if words[0] == 'E':
-                repo.employees.insert(Employee(words[1], words[2], words[3], words[4]))
+                repo.employees.insert(Employee(words[1].strip(' '), words[2].strip(' '), words[3].strip(' '), words[4].strip(' ')))
             if words[0] == 'P':
-                repo.products.insert(Product(words[1], words[2], words[3], 0))
+                repo.products.insert(Product(words[1].strip(' '), words[2].strip(' '), words[3].strip(' '), 0))
     import printdb
     printdb.printdb()
 
