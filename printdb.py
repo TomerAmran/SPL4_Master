@@ -2,59 +2,71 @@ from Repository import repo
 
 
 def print_Activities():
-    print('Activities')
-    for activitie in repo.activities.find_all():
-        print(activitie)
+    output = 'Activities' + '\n'
+    for activity in repo.activities.find_all():
+        output += activity.__str__() + '\n'
+    return output
+
 
 def print_Coffee_stands():
-    print('Coffee stands')
+    output = 'Coffee stands' + '\n'
     for stand in repo.coffee_stands.find_all():
-        print(stand)
+        output += stand.__str__() + '\n'
+    return output
+
 
 def print_Employees():
-    print('Employees')
+    output = 'Employees' + '\n'
     for employee in repo.employees.find_all():
-        print(employee)
+        output += employee.__str__() + '\n'
+    return output
 
 
 def print_Products():
-    print('Product')
+    output = 'Product' + '\n'
     for product in repo.products.find_all():
-        print(product)
+        output += product.__str__() + '\n'
+    return output
 
 
 def print_Suppliers():
-    print('Suppliers')
+    output = 'Suppliers' + '\n'
     for supplier in repo.suppliers.find_all():
-        print(supplier)
+        output += supplier.__str__() + '\n'
+    return output
 
 
 def print_Employees_report():
     report = repo.create_employees_report()
-    print()
-    print('Employees Report')
+    output = 'Employees Report' + '\n'
     for line in report:
-      print(*line)
+        for cell in line:
+            output += cell.__str__() + ' '
+        output.strip(' ')
+        output += '\n'
+    return output
 
 
 def print_joined_Activities():
     report = repo.create_activity_report()
     if report.__len__() > 0:
-        print()
-        print('Activities')
+        output = 'Activities' + '\n'
         for line in report:
-            print(line)
+            output += line.__str__() + '\n'
+        return output
+    return ''
 
 
 def printdb():
-    print_Activities()
-    print_Coffee_stands()
-    print_Employees()
-    print_Products()
-    print_Suppliers()
-    print_Employees_report()
-    print_joined_Activities()
+    output = print_Activities()
+    output += print_Coffee_stands()
+    output += print_Employees()
+    output += print_Products()
+    output += print_Suppliers()
+    output += '\n' + print_Employees_report()
+    output += '\n' + print_joined_Activities()
+    return output
 
 
 if __name__ == '__main__':
-    printdb()
+    print(printdb())

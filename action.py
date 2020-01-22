@@ -15,7 +15,7 @@ def main(args):
                 repo.products.updatequantity(words[0], words[1])
 
     import printdb
-    printdb.printdb()
+    print(printdb.printdb())
 
 
 if __name__ == '__main__':

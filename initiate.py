@@ -5,7 +5,6 @@ from DAO import Coffee_stands, Activities, Employees, Suppliers
 def main(args):
     # imports
     import os
-
     # delete DataBase if exists
     if os.path.exists('moncafe.db'):
         os.remove('moncafe.db')
@@ -29,15 +28,7 @@ def main(args):
             if words[0] == 'P':
                 repo.products.insert(Product(words[1].strip(' '), words[2].strip(' '), words[3].strip(' '), 0))
     import printdb
-    printdb.printdb()
-
-    # print(repo.conn.execute("""
-    # SELECT
-    # Activities.date, Activities.product_id, Activities.quantity, Employees.name
-    # FROM Activities JOIN Employees on activator_id=id
-    # """).fetchall())
-    # print(repo.conn.execute('SELECT * FROM Employees').fetchall())
-    # print(repo.conn.cursor().execute('SELECT * FROM Activities').fetchall())
+    print(printdb.printdb())
 
 
 if __name__ == '__main__':
