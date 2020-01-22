@@ -1,3 +1,4 @@
+import atexit
 import sqlite3
 from DAO import Coffee_stands, Activities, Employees, Suppliers, Products
 from DTO import Employee
@@ -62,5 +63,10 @@ class Repository:
         ORDER BY a.date ASC""")
         return cursor.fetchall()
 
+    def _close(self):
+        self.conn.commit()
+        self.conn.close()
+
 
 repo = Repository()
+atexit.register(repo._close)

@@ -13,7 +13,6 @@ def main(args):
                 repo.activities.insert(Activitie(words[0], words[1], words[2], words[3]))
                 repo.products.find(words[0])
                 repo.products.updatequantity(words[0], words[1])
-        repo.conn.commit()
     import printdb
     print(printdb.printdb())
 
