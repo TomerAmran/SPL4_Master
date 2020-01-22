@@ -23,7 +23,7 @@ def print_Employees():
 
 
 def print_Products():
-    output = 'Product' + '\n'
+    output = 'Products' + '\n'
     for product in repo.products.find_all():
         output += product.__str__() + '\n'
     return output
@@ -38,13 +38,13 @@ def print_Suppliers():
 
 def print_Employees_report():
     report = repo.create_employees_report()
-    output = 'Employees Report' + '\n'
+    output = 'Employees report' + '\n'
     for line in report:
         for cell in line:
             output += cell.__str__() + ' '
-        output.strip(' ')
+        output = output.rstrip()
         output += '\n'
-    return output
+    return output.rstrip()
 
 
 def print_joined_Activities():
