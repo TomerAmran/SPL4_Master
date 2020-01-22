@@ -50,10 +50,10 @@ def print_Employees_report():
 def print_joined_Activities():
     report = repo.create_activity_report()
     if report.__len__() > 0:
-        output = 'Activities' + '\n'
+        output = '\n' + 'Activities' + '\n'
         for line in report:
             output += line.__str__() + '\n'
-        return output
+        return output.rstrip()
     return ''
 
 
